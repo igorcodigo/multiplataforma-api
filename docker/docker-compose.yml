@@ -13,6 +13,22 @@ services:
     #   - ../.env
     ports:
       - "8031:8000"
+    environment:
+      - DJANGO_SETTINGS_MODULE=app.settings
+      - DEBUG=True
+    command: python manage.py runserver 0.0.0.0:8000
+    develop:
+      watch:
+        - action: sync
+          path: ..
+          target: /app
+          ignore:
+            - node_modules/
+            - .git/
+            - __pycache__/
+            - "*.pyc"
+        - action: rebuild
+          path: requirements.txt
 
 # Volumes garante que os dados do banco de dados sejam mantidos persistentemente
 volumes:

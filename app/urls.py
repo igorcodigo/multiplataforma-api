@@ -52,7 +52,10 @@ def loaderio_verification(request):
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('contas/', include('accounts.urls')),
+    path('contas/', include('accounts.urls'))
+    ,
+    path('api/', include('api.urls')),  # URLs da API de comentários
+
     path('hello/', hello_world, name='hello_world'),
     path('teste-carga/', teste_carga, name='teste_carga'),
     path('loaderio-550a90297d4965f85469a81bb57209b6.txt', loaderio_verification, name='loaderio_verification'),
