@@ -109,3 +109,33 @@ class PasswordResetConfirmSerializer(serializers.Serializer):
 class UserLoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True)
+
+# Serializer for User Registration
+class UserRegistrationSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+    email = serializers.EmailField(required=True)
+    full_name = serializers.CharField(required=True)
+
+    class Meta:
+        model = get_user_model()
+        fields = ('email', 'password', 'full_name', 'username') # username will be derived or made optional
+        extra_kwargs = {
+            'username': {'required': False} # Make username optional or handle it in create
+        }
+
+    def validate_email(self, value):
+        User = get_user_model()
+        if User.objects.filter(email=value).exists():
+            raise serializers.ValidationError("A user with that email already exists.")
+        return value
+
+    def create(self, validated_data):
+        # Use email as username if username is not provided or handle it as per your logic
+        username = validated_data.get('email') 
+        user = get_user_model().objects.create_user(
+            username=username, # Or generate a unique username
+            email=validated_data['email'],
+            password=validated_data['password'],
+            full_name=validated_data['full_name']
+        )
+        return user

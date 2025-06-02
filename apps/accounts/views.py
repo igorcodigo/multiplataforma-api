@@ -19,7 +19,8 @@ from .serializers import (
     CustomUserSerializer, 
     PasswordResetRequestSerializer,
     PasswordResetConfirmSerializer,
-    UserLoginSerializer
+    UserLoginSerializer,
+    UserRegistrationSerializer
 )
 from .models import CustomUser, PasswordResetCode
 
@@ -198,3 +199,27 @@ class UserLoginView(APIView):
                 return Response({'detail': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# View to get user details by ID
+class UserDetailsView(generics.RetrieveAPIView):
+    queryset = get_user_model().objects.all()
+    serializer_class = CustomUserSerializer
+    permission_classes = (IsAuthenticated,) # Or AllowAny, depending on requirements
+    lookup_field = 'pk' # 'pk' is the default, but explicit is good
+
+# View for User Registration
+@method_decorator(csrf_exempt, name='dispatch')
+class UserRegistrationView(generics.CreateAPIView):
+    serializer_class = UserRegistrationSerializer
+    permission_classes = (AllowAny,)
+
+    def perform_create(self, serializer):
+        user = serializer.save()
+        # Optionally, send a welcome email here
+        # try:
+        #     send_welcome_email(
+        #         email=user.email,
+        #         name=user.full_name or user.username or "🥳",
+        #     )
+        # except Exception as e:
+        #     print(f"Erro ao enviar email de boas-vindas: {str(e)}")
