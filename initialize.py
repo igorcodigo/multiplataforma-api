@@ -68,6 +68,41 @@ def run_docker_compose():
         print(f"Erro inesperado: {e}")
         return False
 
+def create_env_from_example():
+    # Locais possíveis para o arquivo .env.example
+    possible_locations = [
+        '.env.example',
+        'docker/.env.example',
+        'config/.env.example'
+    ]
+    
+    print(f"Current working directory: {os.getcwd()}") # Debug
+    print(f"Checking for .env.example in: {possible_locations}") # Debug
+    
+    # Procura o arquivo .env.example
+    env_example_path = None
+    for location in possible_locations:
+        print(f"Checking path: {os.path.abspath(location)}") # Debug
+        if os.path.exists(location):
+            env_example_path = location
+            break
+    
+    if env_example_path:
+        # Verifica se .env já existe e notifica usuário
+        if os.path.exists('.env'):
+            print("Arquivo .env já existe. Sobrescrevendo...")
+        else:
+            print(f"Criando arquivo .env a partir de {env_example_path}...")
+            
+        shutil.copy2(env_example_path, '.env')
+        
+        print("Arquivo .env criado/atualizado com sucesso.")
+        return True
+    else:
+        # Se não encontrou .env.example, não cria arquivo vazio
+        print("Arquivo .env.example não encontrado. Nenhum arquivo .env foi criado.")
+        return False
+
 def main():
     """Função principal."""
     # Muda o diretório de trabalho para o diretório do script
@@ -84,6 +119,11 @@ def main():
     else:
         print(f"Sistema operacional: {platform.system()} (não Windows nem Linux)")
     
+    # Cria o arquivo .env a partir do .env.example
+    if not create_env_from_example():
+        print("Falha ao criar o arquivo .env a partir do .env.example.")
+        # Decide if this should be a fatal error
+        # sys.exit(1) # Uncomment if this is critical for the script to continue
     
     # Executa o docker-compose
     if not run_docker_compose():
