@@ -1,0 +1,53 @@
+name: Docker Compose Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Build and start containers
+      run: |
+        docker compose -f docker/docker-compose.yml up -d --build
+
+    - name: Check container status
+      run: |
+        docker compose -f docker/docker-compose.yml ps
+        docker compose -f docker/docker-compose.yml logs template_django_web
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    # que garante que o deploy só aconteça quando: O push for feito para a branch main, e o evento for um push (não um pull request)
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Ao invés de fazer uma versão com SSH, eu posso fazer uma versão com Deploy Keys.
+    # - name: Deploy to VPS
+    #   uses: appleboy/ssh-action@master
+    #   with:
+    #   # Para que este workflow funcione corretamente, você precisará configurar alguns secrets no seu repositório GitHub:
+    #     host: ${{ secrets.VPS_HOST }}
+    #     username: ${{ secrets.VPS_USERNAME }}
+    #     key: ${{ secrets.VPS_SSH_KEY }}
+    #     script: |
+    #       cd /path/to/your/project
+    #       git pull origin main
+    #       docker compose -f docker/docker-compose.yml down
+    #       docker compose -f docker/docker-compose.yml up -d --build 

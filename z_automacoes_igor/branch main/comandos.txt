@@ -1,0 +1,88 @@
+# 📌 Mais Relevantes
+
+# 📌 Configuração Inicial
+git init  # Inicializa um repositório Git no diretório atual
+git clone <url-do-repo>  # Clona um repositório remoto para o seu computador
+
+# 🛠 Durante o desenvolvimento
+git branch  # Lista as branches locais
+git branch -r  # Lista as branches remotas
+git branch <nome-da-branch>  # Cria uma nova branch
+git checkout <nome-da-branch>  # Troca para a branch especificada
+
+
+# ❌ Revertendo Alterações
+git checkout -- <arquivo>  # Desfaz alterações locais em um arquivo não commitado
+git reset --hard  # Reseta todas as alterações não commitadas
+
+
+# 🔄 Atualizando
+git rebase <branch>  # Aplica os commits da branch especificada na branch atual
+git fetch origin  # Busca atualizações do repositório remoto sem mesclar
+git merge <branch>  # Mescla outra branch com a branch atual
+
+
+# 📌 Configuração Inicial
+git config --global user.name "Seu Nome"  # Define seu nome globalmente
+git config --global user.email "seu@email.com"  # Define seu e-mail globalmente
+git config --list  # Mostra as configurações atuais do Git
+
+# 📂 Gerenciamento de Repositório
+git init  # Inicializa um repositório Git no diretório atual
+git clone <url-do-repo>  # Clona um repositório remoto para o seu computador
+git status  # Mostra o status do repositório (arquivos modificados, não rastreados, etc.)
+git log --oneline --graph --all  # Exibe o histórico do repositório de forma resumida
+
+# 🔀 Gerenciamento de Branches
+git branch  # Lista as branches locais
+git branch -r  # Lista as branches remotas
+git branch <nome-da-branch>  # Cria uma nova branch
+git checkout <nome-da-branch>  # Troca para a branch especificada
+git checkout -b <nome-da-branch>  # Cria e troca para a nova branch
+git push -u origin <nome-da-branch>  # Envia a branch para o repositório remoto
+git branch -d <nome-da-branch>  # Deleta a branch localmente
+git push origin --delete <nome-da-branch>  # Deleta a branch no repositório remoto
+
+# ✅ Commit e Versionamento
+git add .  # Adiciona todas as mudanças ao próximo commit
+git add <arquivo>  # Adiciona um arquivo específico ao próximo commit
+git commit -m "Mensagem do commit"  # Cria um commit com uma mensagem descritiva
+git commit --amend -m "Nova mensagem"  # Edita o último commit (somente se ainda não foi enviado)
+git reset HEAD~1  # Desfaz o último commit, mantendo as alterações nos arquivos
+
+# 🔄 Enviando e Atualizando do Repositório Remoto
+git pull origin <branch>  # Puxa as últimas alterações do repositório remoto
+git push origin <branch>  # Envia suas alterações para o repositório remoto
+git fetch origin  # Busca atualizações do repositório remoto sem mesclar
+git merge <branch>  # Mescla outra branch com a branch atual
+git rebase <branch>  # Aplica os commits da branch especificada na branch atual
+
+# ❌ Revertendo Alterações
+git checkout -- <arquivo>  # Desfaz alterações locais em um arquivo não commitado
+git reset --hard  # Reseta todas as alterações não commitadas
+git reset --hard <commit-hash>  # Retorna o repositório para um commit anterior
+git revert <commit-hash>  # Cria um novo commit que desfaz um commit específico
+
+# 🛠 Resolvendo Conflitos de Merge
+git merge <branch>  # Tenta mesclar outra branch na atual
+# Se houver conflitos, edite os arquivos conflitantes, depois:
+git add .  
+git commit -m "Conflitos resolvidos"
+
+# 📦 Stash (Guardando Alterações Temporariamente)
+git stash  # Guarda temporariamente as alterações não commitadas
+git stash pop  # Recupera as alterações guardadas no stash
+git stash list  # Lista os stashes armazenados
+git stash drop  # Remove o stash mais recente
+
+# 🔖 Trabalhando com Tags
+git tag  # Lista todas as tags do repositório
+git tag -a v1.0 -m "Versão 1.0"  # Cria uma nova tag anotada
+git push origin --tags  # Envia todas as tags para o repositório remoto
+git tag -d <tag>  # Deleta uma tag localmente
+git push origin --delete <tag>  # Remove uma tag do repositório remoto
+
+# 🔍 Inspecionando Commits e Branches
+git show <commit-hash>  # Mostra detalhes de um commit específico
+git diff  # Mostra as diferenças entre o último commit e os arquivos atuais
+git diff <branch1> <branch2>  # Mostra as diferenças entre duas branches
