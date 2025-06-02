@@ -104,3 +104,8 @@ class PasswordResetConfirmSerializer(serializers.Serializer):
         self.reset_code.save()
         
         return self.user
+
+# Serializer for UserLoginView
+class UserLoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(write_only=True)

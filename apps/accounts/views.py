@@ -13,11 +13,13 @@ import random
 import datetime
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework import serializers
 
 from .serializers import (
     CustomUserSerializer, 
     PasswordResetRequestSerializer,
-    PasswordResetConfirmSerializer
+    PasswordResetConfirmSerializer,
+    UserLoginSerializer
 )
 from .models import CustomUser, PasswordResetCode
 
@@ -167,3 +169,32 @@ class UserViewSet(viewsets.ModelViewSet):
     def me(self, request):
         serializer = self.get_serializer(request.user)
         return Response(serializer.data)
+
+# Serializer for UserLoginView
+class UserLoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(write_only=True)
+
+# View for user login and returning user ID
+@method_decorator(csrf_exempt, name='dispatch')
+class UserLoginView(APIView):
+    permission_classes = (AllowAny,)
+    serializer_class = UserLoginSerializer
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            email = serializer.validated_data['email']
+            password = serializer.validated_data['password']
+            
+            User = get_user_model()
+            try:
+                user = User.objects.get(email=email)
+                if user.check_password(password):
+                    return Response({'user_id': user.id}, status=status.HTTP_200_OK)
+                else:
+                    return Response({'detail': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+            except User.DoesNotExist:
+                return Response({'detail': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

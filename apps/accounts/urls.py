@@ -7,7 +7,8 @@ from .views import (
     PasswordResetRequestView, 
     PasswordResetConfirmView, 
     EmailOrUsernameTokenObtainPairView,
-    UserViewSet
+    UserViewSet,
+    UserLoginView
 )
 from .forms import EmailOrUsernameAuthenticationForm
 
@@ -28,6 +29,9 @@ urlpatterns = [
     # Endpoints para redefinição de senha
     path('api/password/reset/', PasswordResetRequestView.as_view(), name='password_reset_request'),
     path('api/password/reset/confirm/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    
+    # Endpoint for user login
+    path('api/login/', UserLoginView.as_view(), name='user_login'),
     
     # Template para redefinição de senha (agora usando query parameters)
     path('reset-password/', 
