@@ -204,7 +204,7 @@ class UserLoginView(APIView):
 class UserDetailsView(generics.RetrieveAPIView):
     queryset = get_user_model().objects.all()
     serializer_class = CustomUserSerializer
-    permission_classes = (IsAuthenticated,) # Or AllowAny, depending on requirements
+    permission_classes = (AllowAny,) # Or AllowAny, depending on requirements
     lookup_field = 'pk' # 'pk' is the default, but explicit is good
 
 # View for User Registration
