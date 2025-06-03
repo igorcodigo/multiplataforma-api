@@ -139,3 +139,8 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             full_name=validated_data['full_name']
         )
         return user
+
+class PublicUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = get_user_model()
+        fields = ('id', 'username', 'first_name', 'last_name')

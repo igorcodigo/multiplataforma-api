@@ -20,7 +20,8 @@ from .serializers import (
     PasswordResetRequestSerializer,
     PasswordResetConfirmSerializer,
     UserLoginSerializer,
-    UserRegistrationSerializer
+    UserRegistrationSerializer,
+    PublicUserSerializer
 )
 from .models import CustomUser, PasswordResetCode
 
@@ -152,7 +153,7 @@ class UserViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_permissions(self):
-        if self.action in ['create']:
+        if self.action in ['create', 'retrieve']:
             return [AllowAny()]
         return super().get_permissions()
 
@@ -223,3 +224,9 @@ class UserRegistrationView(generics.CreateAPIView):
         #     )
         # except Exception as e:
         #     print(f"Erro ao enviar email de boas-vindas: {str(e)}")
+
+class PublicUserDetailsView(generics.RetrieveAPIView):
+    queryset = get_user_model().objects.all()
+    serializer_class = PublicUserSerializer
+    permission_classes = (AllowAny,)
+    lookup_field = 'pk'

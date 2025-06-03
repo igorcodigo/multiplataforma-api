@@ -10,7 +10,8 @@ from .views import (
     UserViewSet,
     UserLoginView,
     UserDetailsView,
-    UserRegistrationView
+    UserRegistrationView,
+    PublicUserDetailsView
 )
 from .forms import EmailOrUsernameAuthenticationForm
 
@@ -35,9 +36,6 @@ urlpatterns = [
     # Endpoint for user login
     path('api/login/', UserLoginView.as_view(), name='user_login'),
 
-    # Endpoint to get user details by ID
-    path('api/users/<int:pk>/', UserDetailsView.as_view(), name='user_details'),
-
     # Endpoint for user registration
     path('api/register/', UserRegistrationView.as_view(), name='user_register'),
     
@@ -45,4 +43,7 @@ urlpatterns = [
     path('reset-password/', 
          TemplateView.as_view(template_name='password_reset_confirm.html'), 
          name='password_reset_confirm_page'),
+
+    # Public endpoint for user details
+    path('api/users/<int:pk>/', PublicUserDetailsView.as_view(), name='public_user_details'),
 ]
