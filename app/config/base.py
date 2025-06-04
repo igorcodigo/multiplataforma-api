@@ -34,9 +34,11 @@ INSTALLED_APPS = [
     'rest_framework',
 	'api',
 	'chat',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',  # Added CORS middleware
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -136,4 +138,16 @@ REST_FRAMEWORK = {
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 RESEND_SMTP_PORT = int(os.getenv('RESEND_SMTP_PORT', '587'))
 RESEND_SMTP_USERNAME = os.getenv('RESEND_SMTP_USERNAME', 'resend')
-RESEND_SMTP_HOST = os.getenv('RESEND_SMTP_HOST', 'smtp.resend.com') 
+RESEND_SMTP_HOST = os.getenv('RESEND_SMTP_HOST', 'smtp.resend.com')
+
+# Allow all origins for development, or specify your frontend origins
+CORS_ALLOWED_ORIGINS = [
+    "null",  # For requests from local files (file://)
+    "http://localhost:3000",  # Example: React development server
+    "http://localhost:8080",  # Example: Vue development server
+    "http://127.0.0.1:5500", # Example: VS Code Live Server
+    "http://localhost:5173",  # Example: Vite development server
+]
+CORS_ALLOW_CREDENTIALS = True 
+# If you want to allow all origins (less secure):
+# CORS_ALLOW_ALL_ORIGINS = True 
