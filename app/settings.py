@@ -1,6 +1,8 @@
 from pathlib import Path
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 from pathlib import Path
+# https://docs.djangoproject.com/en/5.0/howto/static-files/
+from pathlib import Path
 import os
 import sys
 from dotenv import load_dotenv
@@ -23,6 +25,7 @@ STATIC_URL = 'static/'
 # Exemplo de trechso relacionados ao STATICFILES_DIRS > 
 # {% load static %} <link rel="stylesheet" href="{% static 'css/basetemplate.css' %}">
 STATICFILES_DIRS = [
+	BASE_DIR / "chat" / "static",
 	BASE_DIR / "api" / "static",
     BASE_DIR / "apps" / "accounts" / "static",
     BASE_DIR / "static"
